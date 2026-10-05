@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wrkshets</title>
+  <meta name="description" content="Free printable PDF worksheets for autistic adults: word scramble, word search, ABC, numbers and connect the dots.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#controls">Skip to worksheet options</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Wrkshets</h1>
+      <p class="tagline">Free printable worksheets for autistic adults. Pick an activity, choose your settings, and download a PDF. No sign-up, no ads, nothing is uploaded.</p>
+    </div>
+  </header>
+
+  <main class="wrap layout">
+    <form id="controls" class="controls" autocomplete="off" onsubmit="return false">
+
+      <fieldset class="step">
+        <legend><span class="num">1</span> Choose an activity</legend>
+        <div class="types" role="radiogroup" aria-label="Activity">
+          <label class="type"><input type="radio" name="type" value="wordsearch" checked>
+            <span class="type-card"><span class="icon" aria-hidden="true">🔍</span><span class="type-name">Word Search</span><span class="type-desc">Find hidden words in a grid</span></span></label>
+          <label class="type"><input type="radio" name="type" value="scramble">
+            <span class="type-card"><span class="icon" aria-hidden="true">🔀</span><span class="type-name">Word Scramble</span><span class="type-desc">Unmix the letters</span></span></label>
+          <label class="type"><input type="radio" name="type" value="abc">
+            <span class="type-card"><span class="icon" aria-hidden="true">🔤</span><span class="type-name">ABC</span><span class="type-desc">Letters and alphabet order</span></span></label>
+          <label class="type"><input type="radio" name="type" value="numbers">
+            <span class="type-card"><span class="icon" aria-hidden="true">🔢</span><span class="type-name">1 2 3 4</span><span class="type-desc">Numbers, counting and sums</span></span></label>
+          <label class="type"><input type="radio" name="type" value="dots">
+            <span class="type-card"><span class="icon" aria-hidden="true">✏️</span><span class="type-name">Connect the Dots</span><span class="type-desc">Join the dots to make a picture</span></span></label>
+          <label class="type"><input type="radio" name="type" value="bundle">
+            <span class="type-card"><span class="icon" aria-hidden="true">📚</span><span class="type-name">Mixed Pack</span><span class="type-desc">One page of each activity</span></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="step">
+        <legend><span class="num">2</span> Settings</legend>
+
+        <div class="field">
+          <span class="label" id="lvl-label">Level</span>
+          <div class="segmented" role="radiogroup" aria-labelledby="lvl-label">
+            <label><input type="radio" name="difficulty" value="easy" checked><span>Easy</span></label>
+            <label><input type="radio" name="difficulty" value="medium"><span>Medium</span></label>
+            <label><input type="radio" name="difficulty" value="hard"><span>Hard</span></label>
+          </div>
+        </div>
+
+        <div class="field" data-for="abc">
+          <label class="label" for="abcActivity">ABC activity</label>
+          <select id="abcActivity" name="abcActivity">
+            <option value="trace">Trace the letters</option>
+            <option value="missing">Fill in missing letters</option>
+            <option value="order">Put words in ABC order</option>
+            <option value="match">Match big and small letters</option>
+          </select>
+        </div>
+
+        <div class="field" data-for="numbers">
+          <label class="label" for="numActivity">Numbers activity</label>
+          <select id="numActivity" name="numActivity">
+            <option value="trace">Trace the numbers</option>
+            <option value="missing">Fill in missing numbers</option>
+            <option value="count">Count the shapes</option>
+            <option value="math">Add and subtract</option>
+          </select>
+        </div>
+
+        <div class="field" data-for="dots">
+          <label class="label" for="shape">Picture</label>
+          <select id="shape" name="shape">
+            <option value="">Surprise me (different each page)</option>
+          </select>
+        </div>
+
+        <div class="field" data-for="dots">
+          <span class="label" id="dotlbl-label">Dots are marked with</span>
+          <div class="segmented" role="radiogroup" aria-labelledby="dotlbl-label">
+            <label><input type="radio" name="dotLabels" value="numbers" checked><span>1 2 3</span></label>
+            <label><input type="radio" name="dotLabels" value="letters"><span>A B C</span></label>
+          </div>
+        </div>
+
+        <div class="field" data-for="words">
+          <label class="label" for="theme">Word topic</label>
+          <select id="theme" name="theme"></select>
+        </div>
+
+        <div class="field" data-for="words">
+          <label class="label" for="customWords">Or use your own words <span class="opt">(optional)</span></label>
+          <textarea id="customWords" name="customWords" rows="2" placeholder="For example: coffee, bus, library, Sam"></textarea>
+          <p class="help">Separate words with commas or spaces. Letters only. Your own words replace the topic.</p>
+        </div>
+
+        <div class="field" data-hide-for="bundle">
+          <label class="label" for="pages">Number of pages</label>
+          <input id="pages" name="pages" type="number" min="1" max="20" value="1" inputmode="numeric">
+          <p class="help">Each page is a new puzzle.</p>
+        </div>
+      </fieldset>
+
+      <fieldset class="step">
+        <legend><span class="num">3</span> Page options</legend>
+        <label class="check"><input type="checkbox" name="answerKey" checked> Add answer key pages at the end</label>
+        <label class="check"><input type="checkbox" name="largePrint"> Large print (bigger text, fewer items)</label>
+        <label class="check"><input type="checkbox" name="nameLine" checked> Show "Name" and "Date" lines</label>
+        <div class="field">
+          <span class="label" id="paper-label">Paper size</span>
+          <div class="segmented" role="radiogroup" aria-labelledby="paper-label">
+            <label><input type="radio" name="paper" value="letter" checked><span>US Letter</span></label>
+            <label><input type="radio" name="paper" value="a4"><span>A4</span></label>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="button" id="download" class="btn primary">Download PDF</button>
+        <button type="button" id="shuffle" class="btn">Make new puzzles</button>
+      </div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </form>
+
+    <section class="preview" aria-label="Preview">
+      <div class="preview-head">
+        <h2>Preview</h2>
+        <button type="button" id="openTab" class="btn small">Open in new tab</button>
+      </div>
+      <div class="preview-frame">
+        <iframe id="previewFrame" title="Worksheet preview"></iframe>
+      </div>
+      <p class="help">If the preview is blank on your device, use <strong>Download PDF</strong> instead.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Made to be calm and clear: plain instructions, no timers, no scores. Print as many as you like &mdash; it's free.</p>
+    </div>
+  </footer>
+
+  <script src="js/vendor/jspdf.umd.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/shapes.js"></script>
+  <script src="js/puzzles.js"></script>
+  <script src="js/pdf.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
