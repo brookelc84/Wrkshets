@@ -91,6 +91,24 @@ body {
   background: var(--accent); color: var(--accent-text); font-size: 0.85rem;
 }
 
+.type-groups { display: grid; gap: 14px; }
+.group-name {
+  margin: 0 0 6px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.level-hint {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  font-size: 0.9rem;
+}
+.level-hint:empty { display: none; }
+.btn:disabled { opacity: 0.6; cursor: progress; }
 .types { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .type { display: block; cursor: pointer; }
 .type input { position: absolute; opacity: 0; pointer-events: none; }

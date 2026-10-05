@@ -89,6 +89,48 @@
         "GLOVES", "JACKET", "SWEATER", "HOODIE", "BOOTS", "SANDALS", "BELT", "TIE", "VEST",
         "PAJAMAS", "SHORTS", "JEANS", "MITTENS", "SNEAKERS", "POCKET", "BUTTON", "ZIPPER",
         "COLLAR", "SLEEVE"]
+    },
+    science: {
+      label: "Science",
+      words: ["ATOM", "CELL", "GENE", "MASS", "FORCE", "ENERGY", "MATTER", "GRAVITY", "MAGNET", "OXYGEN",
+        "CARBON", "PROTON", "NEUTRON", "ELECTRON", "MOLECULE", "ELEMENT", "COMPOUND", "REACTION",
+        "FRICTION", "VELOCITY", "PHOTOSYNTHESIS", "EVOLUTION", "ECOSYSTEM", "HYPOTHESIS", "EXPERIMENT",
+        "MICROSCOPE", "TELESCOPE", "LABORATORY", "OBSERVATION", "TEMPERATURE", "CONDUCTOR", "NUCLEUS"]
+    },
+    space: {
+      label: "Space",
+      words: ["SUN", "MOON", "STAR", "MARS", "ORBIT", "COMET", "EARTH", "VENUS", "SATURN", "PLANET",
+        "GALAXY", "METEOR", "ROCKET", "JUPITER", "MERCURY", "NEPTUNE", "URANUS", "ECLIPSE", "ASTEROID",
+        "ASTRONAUT", "SATELLITE", "UNIVERSE", "TELESCOPE", "GRAVITY", "NEBULA", "CRATER", "SUPERNOVA",
+        "CONSTELLATION", "OBSERVATORY", "SPACECRAFT"]
+    },
+    body: {
+      label: "The Human Body",
+      words: ["ARM", "LEG", "EYE", "EAR", "NOSE", "HAND", "FOOT", "KNEE", "BONE", "SKIN", "HEART", "LUNGS",
+        "BRAIN", "BLOOD", "MUSCLE", "SPINE", "ELBOW", "SHOULDER", "STOMACH", "KIDNEY", "LIVER", "SKELETON",
+        "INTESTINE", "ARTERY", "NERVOUS", "DIGESTION", "CIRCULATION", "RESPIRATION", "VERTEBRA", "TENDON"]
+    },
+    technology: {
+      label: "Technology",
+      words: ["APP", "WIFI", "MOUSE", "EMAIL", "PHONE", "TABLET", "LAPTOP", "SCREEN", "BUTTON", "CHARGER",
+        "BATTERY", "PRINTER", "WEBSITE", "PASSWORD", "KEYBOARD", "INTERNET", "SOFTWARE", "HARDWARE",
+        "DOWNLOAD", "COMPUTER", "BROWSER", "DATABASE", "ALGORITHM", "BLUETOOTH", "SPREADSHEET",
+        "CALCULATOR", "PROGRAMMING", "ENCRYPTION", "BANDWIDTH", "SMARTPHONE"]
+    },
+    geography: {
+      label: "Countries of the World",
+      words: ["PERU", "CUBA", "CHAD", "INDIA", "JAPAN", "EGYPT", "KENYA", "NEPAL", "GHANA", "CHINA",
+        "ITALY", "SPAIN", "CHILE", "FRANCE", "CANADA", "BRAZIL", "MEXICO", "NORWAY", "SWEDEN", "GREECE",
+        "TURKEY", "ICELAND", "IRELAND", "POLAND", "VIETNAM", "MOROCCO", "JAMAICA", "PORTUGAL", "THAILAND",
+        "COLOMBIA", "AUSTRALIA", "ARGENTINA", "INDONESIA", "PHILIPPINES", "SWITZERLAND"]
+    },
+    vocabulary: {
+      label: "Challenge Vocabulary",
+      words: ["VIVID", "FRUGAL", "CANDID", "HUMBLE", "ZEALOUS", "DILIGENT", "ABUNDANT", "ELOQUENT",
+        "JUBILANT", "INNOVATE", "PERSEVERE", "RESILIENT", "NOSTALGIA", "TENACIOUS", "PRAGMATIC",
+        "EPHEMERAL", "AMBIGUOUS", "BENEVOLENT", "GREGARIOUS", "METICULOUS", "OPTIMISTIC", "UBIQUITOUS",
+        "WHIMSICAL", "SERENDIPITY", "CONSCIENTIOUS", "MAGNANIMOUS", "PERSPECTIVE", "INDEPENDENT",
+        "COLLABORATE", "PERSPICACIOUS", "EMPATHETIC", "INQUISITIVE"]
     }
   };
 })(typeof window !== "undefined" ? window : globalThis);

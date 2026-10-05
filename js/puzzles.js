@@ -5,6 +5,18 @@
   var WS = (root.WS = root.WS || {});
   var ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+  // ---------- Levels ----------
+
+  // Settings carry a level from 1 to 6. Older generators think in easy/medium/hard.
+  function levelOf(settings) {
+    var n = parseInt(settings.level, 10);
+    if (n >= 1 && n <= 6) return n;
+    return { easy: 2, medium: 4, hard: 6 }[settings.difficulty] || 2;
+  }
+  function difficultyOf(level) {
+    return level <= 2 ? "easy" : level <= 4 ? "medium" : "hard";
+  }
+
   // ---------- Random helpers ----------
 
   // mulberry32: tiny, fast, seedable PRNG.
@@ -64,14 +76,18 @@
     return s;
   }
 
-  var SCRAMBLE_LEVELS = {
-    easy: { count: 8, min: 3, max: 5, hint: true, bank: true },
-    medium: { count: 10, min: 4, max: 7, hint: false, bank: true },
-    hard: { count: 12, min: 6, max: 10, hint: false, bank: false }
-  };
+  // Index = level - 1 (level 1 = Pre-K/K ... level 6 = high school and adult).
+  var SCRAMBLE_LEVELS = [
+    { count: 6, min: 3, max: 4, hint: true, bank: true },
+    { count: 8, min: 3, max: 5, hint: true, bank: true },
+    { count: 10, min: 4, max: 6, hint: false, bank: true },
+    { count: 10, min: 5, max: 8, hint: false, bank: true },
+    { count: 12, min: 6, max: 10, hint: false, bank: false },
+    { count: 12, min: 8, max: 14, hint: false, bank: false }
+  ];
 
   function makeScramble(settings, rng) {
-    var lv = SCRAMBLE_LEVELS[settings.difficulty] || SCRAMBLE_LEVELS.easy;
+    var lv = SCRAMBLE_LEVELS[levelOf(settings) - 1];
     var count = settings.largePrint ? Math.max(5, Math.round(lv.count * 0.7)) : lv.count;
     var words = pickWords(wordPool(settings), count, lv.min, lv.max, rng);
     return {
@@ -88,14 +104,17 @@
     left: [-1, 0], up: [0, -1], upLeft: [-1, -1], downLeft: [-1, 1]
   };
 
-  var SEARCH_LEVELS = {
-    easy: { size: 9, count: 7, dirs: ["right", "down"], maxLen: 8 },
-    medium: { size: 12, count: 10, dirs: ["right", "down", "downRight", "upRight"], maxLen: 10 },
-    hard: { size: 15, count: 14, dirs: Object.keys(DIRS), maxLen: 12 }
-  };
+  var SEARCH_LEVELS = [
+    { size: 7, count: 5, dirs: ["right", "down"], maxLen: 6 },
+    { size: 9, count: 7, dirs: ["right", "down"], maxLen: 8 },
+    { size: 11, count: 9, dirs: ["right", "down", "downRight"], maxLen: 9 },
+    { size: 13, count: 11, dirs: ["right", "down", "downRight", "upRight"], maxLen: 11 },
+    { size: 15, count: 14, dirs: Object.keys(DIRS), maxLen: 12 },
+    { size: 18, count: 18, dirs: Object.keys(DIRS), maxLen: 15 }
+  ];
 
   function makeWordSearch(settings, rng) {
-    var lv = SEARCH_LEVELS[settings.difficulty] || SEARCH_LEVELS.easy;
+    var lv = SEARCH_LEVELS[levelOf(settings) - 1];
     var size = lv.size;
     var count = settings.largePrint ? Math.max(5, Math.round(lv.count * 0.75)) : lv.count;
     if (settings.largePrint && size > 10) size -= 2;
@@ -135,7 +154,7 @@
       placed: placed,
       words: placed.map(function (p) { return p.word; }).sort(),
       dirsNote: lv.dirs.length === 2 ? "Words go across (left to right) or down (top to bottom)."
-        : lv.dirs.length === 4 ? "Words go across, down, or on a slant."
+        : lv.dirs.length <= 4 ? "Words go across, down, or on a slant."
           : "Words can go in any direction, including backwards."
     };
   }
@@ -292,14 +311,14 @@
 
   // ---------- Connect the dots ----------
 
-  var DOT_TARGET = { easy: 0, medium: 30, hard: 45 };
+  var DOT_TARGET = [0, 0, 24, 32, 45, 60]; // 0 = use the picture's own corner points
 
   function makeDots(settings, rng, pageIndex, order) {
     var name = settings.shape && WS.SHAPES[settings.shape] ? settings.shape : order[pageIndex % order.length];
     var shape = WS.SHAPES[name];
     var pts = shape.points();
     var letters = settings.dotLabels === "letters";
-    var target = DOT_TARGET[settings.difficulty] || 0;
+    var target = DOT_TARGET[levelOf(settings) - 1];
     if (letters) target = Math.min(target || pts.length, 26);
     if (target > pts.length) pts = densify(pts, target);
     if (letters && pts.length > 26) pts = pts.slice(0, 26);
@@ -324,6 +343,10 @@
   }
 
   WS.makeRng = makeRng;
+  WS.levelOf = levelOf;
+  WS.difficultyOf = difficultyOf;
+  WS.pickWords = pickWords;
+  WS.wordPool = wordPool;
   WS.cleanWords = cleanWords;
   WS.ALPHABET = ALPHABET;
   WS.THEMES_ALL_WORDS = function () {

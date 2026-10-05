@@ -13,7 +13,7 @@
   <header class="site-header">
     <div class="wrap">
       <h1>Wrkshets</h1>
-      <p class="tagline">Free printable worksheets for autistic adults. Pick an activity, choose your settings, and download a PDF. No sign-up, no ads, nothing is uploaded.</p>
+      <p class="tagline">Free printable worksheets for autistic adults, from first letters and numbers to algebra and essays. Pick an activity and a level, then download a PDF. No sign-up, no ads, nothing is uploaded.</p>
     </div>
   </header>
 
@@ -22,32 +22,61 @@
 
       <fieldset class="step">
         <legend><span class="num">1</span> Choose an activity</legend>
-        <div class="types" role="radiogroup" aria-label="Activity">
-          <label class="type"><input type="radio" name="type" value="wordsearch" checked>
-            <span class="type-card"><span class="icon" aria-hidden="true">🔍</span><span class="type-name">Word Search</span><span class="type-desc">Find hidden words in a grid</span></span></label>
-          <label class="type"><input type="radio" name="type" value="scramble">
-            <span class="type-card"><span class="icon" aria-hidden="true">🔀</span><span class="type-name">Word Scramble</span><span class="type-desc">Unmix the letters</span></span></label>
-          <label class="type"><input type="radio" name="type" value="abc">
-            <span class="type-card"><span class="icon" aria-hidden="true">🔤</span><span class="type-name">ABC</span><span class="type-desc">Letters and alphabet order</span></span></label>
-          <label class="type"><input type="radio" name="type" value="numbers">
-            <span class="type-card"><span class="icon" aria-hidden="true">🔢</span><span class="type-name">1 2 3 4</span><span class="type-desc">Numbers, counting and sums</span></span></label>
-          <label class="type"><input type="radio" name="type" value="dots">
-            <span class="type-card"><span class="icon" aria-hidden="true">✏️</span><span class="type-name">Connect the Dots</span><span class="type-desc">Join the dots to make a picture</span></span></label>
-          <label class="type"><input type="radio" name="type" value="bundle">
-            <span class="type-card"><span class="icon" aria-hidden="true">📚</span><span class="type-name">Mixed Pack</span><span class="type-desc">One page of each activity</span></span></label>
+        <div id="typeGroups" class="type-groups"></div>
+      </fieldset>
+
+      <fieldset class="step">
+        <legend><span class="num">2</span> Choose a level</legend>
+        <div class="field">
+          <label class="label" for="level">Grade level</label>
+          <select id="level" name="level">
+            <option value="1">Level 1 &middot; Pre-K and Kindergarten</option>
+            <option value="2" selected>Level 2 &middot; Grades 1&ndash;2</option>
+            <option value="3">Level 3 &middot; Grades 3&ndash;4</option>
+            <option value="4">Level 4 &middot; Grades 5&ndash;6</option>
+            <option value="5">Level 5 &middot; Grades 7&ndash;8</option>
+            <option value="6">Level 6 &middot; High school and adult</option>
+          </select>
+          <p class="level-hint" id="levelHint"></p>
+          <p class="help">Pick the level that feels comfortable, not the one that matches age or school year. You can change it any time.</p>
         </div>
       </fieldset>
 
       <fieldset class="step">
-        <legend><span class="num">2</span> Settings</legend>
+        <legend><span class="num">3</span> Settings</legend>
+        <p class="help" id="noSettings" hidden>This activity only needs a level. Choose how many pages you want.</p>
 
-        <div class="field">
-          <span class="label" id="lvl-label">Level</span>
-          <div class="segmented" role="radiogroup" aria-labelledby="lvl-label">
-            <label><input type="radio" name="difficulty" value="easy" checked><span>Easy</span></label>
-            <label><input type="radio" name="difficulty" value="medium"><span>Medium</span></label>
-            <label><input type="radio" name="difficulty" value="hard"><span>Hard</span></label>
-          </div>
+        <div class="field" data-for="math">
+          <label class="label" for="mathTopic">Math topic</label>
+          <select id="mathTopic" name="mathTopic">
+            <option value="auto">Mixed topics for my level</option>
+            <option value="add">Addition</option>
+            <option value="sub">Subtraction</option>
+            <option value="mul">Multiplication</option>
+            <option value="div">Division</option>
+            <option value="fractions">Fractions</option>
+            <option value="decimals">Decimals</option>
+            <option value="percents">Percents</option>
+            <option value="integers">Negative numbers</option>
+            <option value="order">Order of operations</option>
+            <option value="equations">Equations (algebra)</option>
+            <option value="exponents">Exponents and square roots</option>
+          </select>
+          <p class="help">The level sets how big and hard the numbers are.</p>
+        </div>
+
+        <div class="field" data-for="time">
+          <label class="label" for="timeActivity">Time activity</label>
+          <select id="timeActivity" name="timeActivity">
+            <option value="read">Read the clock</option>
+            <option value="draw">Draw the hands</option>
+            <option value="elapsed">How long? (elapsed time)</option>
+          </select>
+        </div>
+
+        <div class="field" data-for="money">
+          <label class="label" for="currency">Money</label>
+          <select id="currency" name="currency"></select>
         </div>
 
         <div class="field" data-for="abc">
@@ -104,7 +133,7 @@
       </fieldset>
 
       <fieldset class="step">
-        <legend><span class="num">3</span> Page options</legend>
+        <legend><span class="num">4</span> Page options</legend>
         <label class="check"><input type="checkbox" name="answerKey" checked> Add answer key pages at the end</label>
         <label class="check"><input type="checkbox" name="largePrint"> Large print (bigger text, fewer items)</label>
         <label class="check"><input type="checkbox" name="nameLine" checked> Show "Name" and "Date" lines</label>
@@ -147,6 +176,14 @@
   <script src="js/shapes.js"></script>
   <script src="js/puzzles.js"></script>
   <script src="js/pdf.js"></script>
+  <script src="js/types/math.js"></script>
+  <script src="js/types/time.js"></script>
+  <script src="js/types/money.js"></script>
+  <script src="js/types/sudoku.js"></script>
+  <script src="js/types/maze.js"></script>
+  <script src="js/types/cryptogram.js"></script>
+  <script src="js/types/spelling.js"></script>
+  <script src="js/types/writing.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

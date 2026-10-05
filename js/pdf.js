@@ -570,18 +570,50 @@
 
   // ---------- Document assembly ----------
 
+  function wsDescribe(l) {
+    return ["7 × 7 grid, 5 words going across or down", "9 × 9 grid, 7 words going across or down",
+      "11 × 11 grid, 9 words, some on a slant", "13 × 13 grid, 11 words, some on a slant",
+      "15 × 15 grid, 14 words in any direction", "18 × 18 grid, 18 long words in any direction"][l - 1];
+  }
+  function scDescribe(l) {
+    return ["6 short words with hints", "8 short words with hints", "10 words of 4–6 letters",
+      "10 words of 5–8 letters", "12 long words, no word bank", "12 very long words, no word bank"][l - 1];
+  }
+
   var TYPES = {
-    scramble: { label: "Word Scramble", draw: drawScramble, key: function () { return true; } },
-    wordsearch: { label: "Word Search", draw: drawWordSearch, key: function () { return true; } },
-    abc: { label: "ABC", draw: drawAbc, key: function (s) { return s.abcActivity !== "trace"; } },
-    numbers: { label: "1 2 3 4", draw: drawNumbers, key: function (s) { return s.numActivity !== "trace"; } },
-    dots: { label: "Connect the Dots", draw: drawDots, key: function () { return true; } }
+    scramble: { label: "Word Scramble", draw: drawScramble, key: function () { return true; }, describe: scDescribe },
+    wordsearch: { label: "Word Search", draw: drawWordSearch, key: function () { return true; }, describe: wsDescribe },
+    abc: { label: "ABC", draw: drawAbc, key: function (s) { return s.abcActivity !== "trace"; },
+      describe: function (l) { return l <= 2 ? "Capital letters, 1 missing letter per row" : l <= 4 ? "Capital and small letters, 2 missing per row" : "Whole words, 3 missing per row, bigger groups to sort"; } },
+    numbers: { label: "1 2 3 4", draw: drawNumbers, key: function (s) { return s.numActivity !== "trace"; },
+      describe: function (l) { return l <= 2 ? "Numbers 0–10, counting by 1s" : l <= 4 ? "Numbers to 100, counting by 2s, 5s and 10s" : "Bigger numbers, patterns going up and down"; } },
+    dots: { label: "Connect the Dots", draw: drawDots, key: function () { return true; },
+      describe: function (l) { return ["About 10–15 dots", "About 10–20 dots", "About 24 dots", "About 32 dots", "About 45 dots", "About 60 dots (letters stop at Z)"][l - 1]; } }
   };
 
-  /* settings: { type, difficulty, theme, customWords, pages, answerKey, largePrint,
-   *             nameLine, paper, abcActivity, numActivity, shape, dotLabels, seed }
-   * type may be "bundle" for one page of each worksheet type. */
-  function buildPdf(JsPDF, settings) {
+  // Other files add worksheet types with WS.registerType(key, {label, generate, draw, key, describe}).
+  function registerType(key, def) { TYPES[key] = def; }
+
+  // A Mixed Pack picks activities that suit the chosen level.
+  var BUNDLES = {
+    1: ["wordsearch", "abc", "numbers", "dots", "maze", "time"],
+    2: ["wordsearch", "scramble", "math", "dots", "maze", "time"],
+    3: ["wordsearch", "scramble", "math", "sudoku", "maze", "money"],
+    4: ["wordsearch", "cryptogram", "math", "sudoku", "maze", "money"],
+    5: ["wordsearch", "cryptogram", "math", "sudoku", "maze", "money"],
+    6: ["wordsearch", "cryptogram", "math", "sudoku", "maze", "money"]
+  };
+  // In a Mixed Pack, use the activity that has an answer key rather than tracing.
+  var BUNDLE_SETTINGS = { abcActivity: "missing", numActivity: "count", mathTopic: "auto", timeActivity: "read", shape: "" };
+
+  /* settings: { type, level (1–6), theme, customWords, pages, answerKey, largePrint,
+   *             nameLine, paper, abcActivity, numActivity, mathTopic, timeActivity,
+   *             currency, shape, dotLabels, seed }
+   * type may be "bundle" for one page of several activities. */
+  function buildPdf(JsPDF, input) {
+    var level = WS.levelOf(input);
+    var settings = Object.assign({}, input, { level: level, difficulty: WS.difficultyOf(level) });
+    if (settings.type === "bundle") Object.assign(settings, BUNDLE_SETTINGS);
     var doc = new JsPDF({ unit: "mm", format: settings.paper === "a4" ? "a4" : "letter" });
     var ctx = {
       doc: doc,
@@ -596,7 +628,7 @@
 
     var jobs = [];
     if (settings.type === "bundle") {
-      ["wordsearch", "scramble", "abc", "numbers", "dots"].forEach(function (t, i) {
+      BUNDLES[level].forEach(function (t, i) {
         jobs.push({ type: t, page: 0, rngSeed: seed + i * 7919 });
       });
     } else {
@@ -607,18 +639,28 @@
     var keys = [];
     jobs.forEach(function (job, n) {
       var rng = WS.makeRng(job.rngSeed);
-      var pz = WS.puzzles[job.type](settings, rng, job.page, shapeOrder);
+      var type = TYPES[job.type];
+      var gen = type.generate || WS.puzzles[job.type];
+      var pz = gen(settings, rng, job.page, shapeOrder);
       if (n > 0) doc.addPage();
-      TYPES[job.type].draw(ctx, pz, false);
-      if (settings.answerKey && TYPES[job.type].key(settings)) keys.push({ type: job.type, pz: pz });
+      type.draw(ctx, pz, false);
+      if (settings.answerKey && type.key(settings)) keys.push({ type: type, pz: pz });
     });
     keys.forEach(function (k) {
       doc.addPage();
-      TYPES[k.type].draw(ctx, k.pz, true);
+      k.type.draw(ctx, k.pz, true);
     });
     return doc;
   }
 
+  // Shared drawing helpers for the worksheet types in js/types/.
+  WS.draw = {
+    PT: PT, INK: INK, SOFT: SOFT, LIGHT: LIGHT, TRACE: TRACE, ACCENT: ACCENT, HILITE: HILITE,
+    setText: setText, setDraw: setDraw, setFill: setFill, font: font, solid: solid,
+    header: header, footer: footer, textMid: textMid, polygon: polygon,
+    guideRow: guideRow, traceText: traceText, drawTracePage: drawTracePage, drawWordBank: drawWordBank
+  };
+  WS.registerType = registerType;
   WS.TYPES = TYPES;
   WS.buildPdf = buildPdf;
 })(typeof window !== "undefined" ? window : globalThis);
