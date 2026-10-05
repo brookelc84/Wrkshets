@@ -29,6 +29,7 @@ It's a static site with no build step. Open `index.html` in a browser, or host t
 - `js/shapes.js` – connect-the-dots pictures (outlines in a 100×100 box)
 - `js/puzzles.js` – seeded puzzle generators (pure logic, no drawing)
 - `js/pdf.js` – draws pages with [jsPDF](https://github.com/parallax/jsPDF) (vendored in `js/vendor/`, MIT licence)
+- Preview pages are drawn with [PDF.js](https://github.com/mozilla/pdf.js) (vendored in `js/vendor/`, Apache 2.0 licence), so the preview also works on phones
 - `js/app.js` – page controls, preview and download
 
 Test: `node tests/smoke.js` builds every combination and checks the puzzles are valid.

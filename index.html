@@ -127,12 +127,10 @@
     <section class="preview" aria-label="Preview">
       <div class="preview-head">
         <h2>Preview</h2>
-        <button type="button" id="openTab" class="btn small">Open in new tab</button>
+        <span class="page-count" id="pageCount"></span>
       </div>
-      <div class="preview-frame">
-        <iframe id="previewFrame" title="Worksheet preview"></iframe>
-      </div>
-      <p class="help">If the preview is blank on your device, use <strong>Download PDF</strong> instead.</p>
+      <div class="preview-frame" id="previewPages" aria-live="polite"></div>
+      <p class="help">This is how the printed pages will look. Use <strong>Download PDF</strong> to save and print them.</p>
     </section>
   </main>
 
@@ -143,6 +141,8 @@
   </footer>
 
   <script src="js/vendor/jspdf.umd.min.js"></script>
+  <script src="js/vendor/pdf.worker.min.js"></script>
+  <script src="js/vendor/pdf.min.js"></script>
   <script src="js/data.js"></script>
   <script src="js/shapes.js"></script>
   <script src="js/puzzles.js"></script>
